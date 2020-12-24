@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JS TEST</title>
+    </head>
+    <body>
+        <h1>JAVA SCRIPT TEST</h1>
+        <hr>
+        <script>
+            //if문
+            document.write("## if문 ## <br>")
+            num = prompt("숫자 입력 : ");
+            if(num > 0){
+                document.write("0보다 큰 수 입력<br>");
+            } else if(num < 0){
+                document.write("0보다 작은 수 입력<br>");
+            } else {
+                document.write("0과 같은 수 입력<br>");
+            }
+
+            //switch문
+            document.write("## switch문 ## <br>")
+            document.write(typeof(num)+"<br>"); //prompt에서 num을 문자열로 받음
+            switch(num){    //switch는 값 자체를 비교하기 때문에 문자로 인식함. case 문자열로 표기
+                case "1" : document.write("1 입력 <br>");
+                    break;
+                case "2" : document.write("2 입력 <br>");
+                    break;
+                case "3" : document.write("3 입력 <br>");
+                    break;
+                default : document.write("기타 입력 <br>")
+            }
+
+            //for문
+            document.write("## for문 ## <br>")
+            for(i=0; i<num; i++){
+                document.write(i+1+"번째 반복<br>");
+            }
+
+            //while문
+            document.write("## while문 ## <br>")
+            i=0;
+            while(i<num){
+                document.write(i+1+"번째 반복<br>");
+                i++;
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>정규표현식</title>
+        <style>
+            .area-big{
+                height: 400px;
+                background-color: plum;
+                border: 1px solid black;
+            }
+            .area{
+                height: 150px;
+                background-color: plum;
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>정규 표현식</h1>
+        <hr>
+        <h3>정규표현식의 객체 생성</h3>
+        <button onclick="test1();">확인하기</button>
+        <div id="area1" class="area"></div>
+        <script>
+            function test1(){
+                //정규표현식 변수 선언(2가지 방법)
+                //var regExp = new RegExp('script');  //정규표현식의 값이 여러 번 변경될 경우 사용
+                //var regExp = /script/;
+                var regExp = /script/g; //Flag 사용 (g : 모든 문자열 패턴을 찾음)
+
+                //검사 대상이 될 문자열
+                var str = 'javascript jquery ajax script';
+
+                var area1 = document.getElementById('area1');
+
+                area1.innerHTML += "대상 문자열 원본 : "+str+"<br>";
+                //정규표현식 메소드 사용
+                area1.innerHTML += "test() 함수 사용 : "+regExp.test(str)+"<br>";   //true
+                area1.innerHTML += "exec() 함수 사용 : "+regExp.exec(str)+"<br>";   //script
+                //exec()는 String객체의 match()와 달리 한 번만 찾아줌
+
+
+            //정규표현식의 메소드를 직접 사용하기보다는 String객체의 메소드를 사용하는 것이 일반적임
+                //match() : 일치하는 문자열을 찾아줌
+                area1.innerHTML += "match() 함수 사용 : "+str.match(regExp)+"<br>"; //script
+                                                                                //Flag 사용 후 : script,script
+                //replace() : 문자열 대체
+                area1.innerHTML += "replace() 함수 사용 : "+str.replace(regExp, ' 스크립트')+"<br>"; //java 스크립트 jquery ajax script
+                                                                                //Flag 사용 후 : java 스크립트 jquery ajax 스크립트
+                //search() : 해당하는 첫번째 위치값 반환
+                area1.innerHTML += "search() 함수 사용 : "+str.search(regExp)+"<br>";  //4 
+                //split() : 해당 문자열을 잘라줌
+                area1.innerHTML += "split() 함수 사용 : "+str.split(regExp)+"<br>"; //java, jquery ajax ,
+            }
+        </script>
+
+        <hr>
+        <h3>앵커 문자</h3>
+        <p>문자열의 앞과 뒤를 구분해주는 정규표현식 기초</p>
+        <button onclick="test2();">실행 확인</button>
+        <div id="area2" class="area"></div>
+        <script>
+            function test2(){
+                //gim : 대소문자 구분없이 전체 문단에서 모든 문자열 패턴을 찾음
+                var regExp1 = /^j/gim; //^ : 시작문자에서 j를 찾음
+                var regExp2 = /t$/gim; //$ : 끝문자에서 t를 찾음
+
+                var str1 = "Java\nJavaScript\nJQuery\nAjax";
+                var str2 = "Java\nJavaScript\nJQuery\nAjax";
+
+                var area2 = document.getElementById('area2');
+
+                area2.innerHTML += "^j : "+str1.replace(regExp1,'1')+"<br>";   //1ava 1avaScript 1Query Ajax
+                area2.innerHTML += "t$ : "+str2.replace(regExp2,'2')+"<br>";   //Java JavaScrip2 JQuery Ajax
+            }
+        </script>
+
+        <hr>
+        <h3>메타 문자</h3>
+        <p>자바 스크립트 정규 표현식 객체가 갖는 가장 유용한 기능</p>
+        <button onclick="test3();">실행 확인</button>
+        <div id="area3" class="area"></div>
+        <script>
+            function test3(){
+                var regExp1 = /[aj]/ig; //a 또는 j 문자 찾기
+                var regExp2 = /[^aj]/ig; //대괄호[] 안에 ^가 들어가면 not을 의미 - a 또는 j가 아닌 문자 찾기
+                var regExp3 = /[a-z]/g; //소문자 a~z 사이에 있는 문자 찾기
+                var regExp4 = /[A-Z]/g; //대문자 A~Z 사이에 있는 문자 찾기
+                var regExp5 = /[0-9]/ig; //숫자 0~9 사이에 있는 문자 찾기
+
+                var str = "JavaScript JQuery Ajax Oracle Java123";
+
+                var area3 = document.getElementById('area3');
+                
+                area3.innerHTML += "원본 문자열 : "+str+"<br>";
+                area3.innerHTML += "[aj] : "+str.replace(regExp1,'#')+"<br>";   //##v#Script #Query ###x Or#cle ##v#123
+                area3.innerHTML += "[^aj] : "+str.replace(regExp2,'#')+"<br>";  //Ja#a#######J######Aja####a####Ja#a###
+                area3.innerHTML += "[a-z] : "+str.replace(regExp3,'#')+"<br>";  //J###S##### JQ#### A### O##### J###123
+                area3.innerHTML += "[A-Z] : "+str.replace(regExp4,'#')+"<br>";  //#ava#cript ##uery #jax #racle #ava123
+                area3.innerHTML += "[0-9] : "+str.replace(regExp5,'#')+"<br>";  //JavaScript JQuery Ajax Oracle Java###
+            }
+        </script>
+
+        <hr>
+        <h3>메타문자를 이용한 주민번호 확인</h3>
+        <label>주민번호 입력 : </label>
+        <input type="text" id="pno">
+        <button onclick="test4();">실행확인</button>
+        <div id="area4" class="area"></div>
+        <script>
+            function test4(){
+                var regExp1 = /......-....../; //.은 단일문자를 의미 / 문자열의 자릿수 확인
+                var pno = document.getElementById('pno').value;
+
+                var area4 = document.getElementById('area4');
+                area4.innerHTML += "입력된 문자열 : "+pno+"<br>";
+                if(regExp1.test(pno)){
+                    area4.innerHTML += "주민번호 형식에 맞게 잘 입력됨<br>";
+                }else{
+                    area4.innerHTML += "형식에 맞지 않음<br>"
+                }
+            }
+        </script>
+
+        <hr>
+        <h3>추가 메타 문자</h3>
+        <p>
+            \d : 숫자 <br>
+            \w : 아무 단어 (숫자 포함)<br>
+            \s : 공백문자 (탭, 띄어쓰기, 줄바꿈)<br>
+            \D : 숫자 아님<br>
+            \W : 아무 단어 아님<br>
+            \S : 공백 문자 아님<br>
+        </p>
+        <label>주민번호 입력 : </label>
+        <input type="text" id="pno2">
+        <button onclick="test5();">실행확인</button>
+        <div id="area5" class="area"></div>
+        <script>
+            function test5(){
+                var regExp1 = /\d\d\d\d\d\d-\d\d\d\d\d\d\d/; //.은 단일문자를 의미 / 문자열의 자릿수 확인
+                var pno = document.getElementById('pno2').value;
+
+                var area5 = document.getElementById('area5');
+                area5.innerHTML += "입력된 문자열 : "+pno+"<br>";
+                if(regExp1.test(pno)){
+                    area5.innerHTML += "주민번호 형식에 맞게 잘 입력됨<br>";
+                }else{
+                    area5.innerHTML += "형식에 맞지 않음<br>"
+                }
+            }
+        </script>
+
+        <hr>
+        <h3>수량 문자</h3>
+        <p>
+            a+ : a가 적어도 1개 이상<br>
+            a* : a가 0개 또는 여러 개<br>
+            a? : a가 0개 또는 한 개<br>
+            a{n} : a가 n개<br>
+            a{n1,n2} : a가 n1~n2개<br>
+            a{n, } : a가 n개 이상<br>
+            a{ ,n} : a가 n개 이하<br>
+        </p>
+        <label>주민번호 입력 : </label>
+        <input type="text" id="pno3">
+        <button onclick="test6();">실행확인</button>
+        <div id="area6" class="area"></div>
+        <script>
+            function test6(){
+                var regExp1 = /\d{6}-\d{7}/; //.은 단일문자를 의미 / 문자열의 자릿수 확인
+                var pno = document.getElementById('pno3').value;
+
+                var area6 = document.getElementById('area6');
+                area6.innerHTML += "입력된 문자열 : "+pno+"<br>";
+                if(regExp1.test(pno)){
+                    area6.innerHTML += "주민번호 형식에 맞게 잘 입력됨<br>";
+                }else{
+                    area6.innerHTML += "형식에 맞지 않음<br>"
+                }
+            }
+        </script>
+    </body>
+</html>
